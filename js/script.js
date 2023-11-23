@@ -1,3 +1,44 @@
+class BMI {
+  constructor(tinggi, berat) {
+    this.tinggi = tinggi;
+    this.berat = berat;
+    this.bmi = this.hitungBMI();
+    this.kategori = this.hitungKategori();
+    this.rekomendasi = this.hitungRekomendasi();
+  }
+
+  hitungBMI() {
+    return this.berat / Math.pow(this.tinggi / 100, 2);
+  }
+
+  hitungKategori() {
+    if (this.bmi < 18.5) {
+      return "Kurus";
+    } else if (this.bmi >= 18.5 && this.bmi < 25) {
+      return "Normal";
+    } else if (this.bmi >= 25 && this.bmi < 30) {
+      return "Gemuk";
+    } else {
+      return "Obesitas";
+    }
+  }
+
+  hitungRekomendasi() {
+    switch (this.kategori) {
+      case "Kurus":
+        return "Anda mungkin perlu menambah asupan makanan.";
+      case "Normal":
+        return "Pertahankan pola makan dan aktivitas fisik yang sehat.";
+      case "Gemuk":
+        return "Pertimbangkan untuk mengurangi porsi makan dan berolahraga lebih aktif.";
+      case "Obesitas":
+        return "Segera konsultasikan dengan dokter untuk menetapkan program penurunan berat badan.";
+      default:
+        return "Tidak ada rekomendasi yang tersedia.";
+    }
+  }
+}
+
 function hitungBMI(event) {
   event.preventDefault(); // Menghentikan perilaku default dari form submit
 
@@ -8,53 +49,21 @@ function hitungBMI(event) {
   const tinggi = parseFloat(document.getElementById("tinggi").value);
   const berat = parseFloat(document.getElementById("berat").value);
 
-  // Menghitung BMI
-  const bmi = berat / Math.pow(tinggi / 100, 2); // Rumus BMI: berat(kg) / (tinggi(m) * tinggi(m))
+  // Membuat objek BMI
+  const bmiObj = new BMI(tinggi, berat);
 
   // Menampilkan hasil BMI pada elemen dengan id 'bmiAnda'
-
   document.getElementById(
-    "hasilBMI"
-  ).innerText = `Body Mass Index (BMI) Anda adalah`;
-  document.getElementById("bmiAnda").innerText = `${bmi.toFixed(2)}`;
+    "bmiAnda"
+  ).innerText = `Body Mass Index (BMI) Anda adalah: ${bmiObj.bmi.toFixed(2)}`;
+
+  // Menampilkan kategori BMI
   document.getElementById(
-    "berdasarkan"
-  ).innerText = `Berdasarkan nilai input Anda, berat Anda berada dalam kategori`;
+    "category"
+  ).innerText = `Kategori BMI: ${bmiObj.kategori}`;
 
-  // Menampilkan kategori BMI berdasarkan range nilai BMI
-  let category = "";
-  if (bmi < 18.5) {
-    category = "Kurus";
-  } else if (bmi >= 18.5 && bmi < 25) {
-    category = "Normal";
-  } else if (bmi >= 25 && bmi < 30) {
-    category = "Gemuk";
-  } else {
-    category = "Obesitas";
-  }
-  document.getElementById("category").innerText = `${category}`;
-
-  // Memberikan rekomendasi berdasarkan kategori BMI
-  let recommendation = "";
-  switch (category) {
-    case "Kurus":
-      recommendation = "Anda mungkin perlu menambah asupan makanan.";
-      break;
-    case "Normal":
-      recommendation = "Pertahankan pola makan dan aktivitas fisik yang sehat.";
-      break;
-    case "Gemuk":
-      recommendation =
-        "Pertimbangkan untuk mengurangi porsi makan dan berolahraga lebih aktif.";
-      break;
-    case "Obesitas":
-      recommendation =
-        "Segera konsultasikan dengan dokter untuk menetapkan program penurunan berat badan.";
-      break;
-    default:
-      recommendation = "Tidak ada rekomendasi yang tersedia.";
-  }
+  // Menampilkan rekomendasi berdasarkan kategori BMI
   document.getElementById(
     "rekomendasi"
-  ).innerText = `Rekomendasi: ${recommendation}`;
+  ).innerText = `Rekomendasi: ${bmiObj.rekomendasi}`;
 }
