@@ -3,6 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--Icon-->
+    <link
+      rel="icon"
+      type="favicon-32x32.png"
+      href="https://gdurl.com/4Q-I/stats"
+    />
     <title>Kalkulator BMI</title>
     <!--CSS-->
     <link rel="stylesheet" href="./css/style.css" />
@@ -17,7 +23,7 @@
         <form name="bmiForm" onsubmit="hitungBMI(event)">
           <section class="copy">
             <h1>Kalkulator BMI</h1>
-            <p>Gunakan kalkulator ini untuk menghitung BMI anda</p>
+            <p>Gunakan kalkulator ini untuk menghitung BMI Anda</p>
           </section>
           <!--Input Tinggi Badan-->
           <div class="height-input">
@@ -60,12 +66,31 @@
           <!--Output-->
           <div class="hasilBMI" id="hasilBMI"></div>
           <div class="bmiAnda" id="bmiAnda"></div>
+          <hr id="hr1" />
           <br />
           <div class="berdasarkan" id="berdasarkan"></div>
           <div class="category" id="category"></div>
+          <hr id="hr2" />
+          <br />
+
+          <div id="ideal"></div>
+          <div id="angkaIdeal"></div>
+          <hr id="hr3" />
+
           <br />
           <div id="rekomendasi"></div>
           <br />
+
+          <div class="fluid">
+            <button onclick="hitungLagi()" id="hitungLagi">Hitung Lagi</button>
+            <!--Tombol Konsultasi Dokter-->
+            <button
+              id="konsultasi"
+              onclick="window.open('https://www.halodoc.com/', '_blank')"
+            >
+              Konsultasi Dokter
+            </button>
+          </div>
         </section>
       </div>
     </div>

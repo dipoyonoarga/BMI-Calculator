@@ -1,30 +1,57 @@
 class BMI {
-  constructor(tinggi, berat) {
-    this.tinggi = tinggi;
-    this.berat = berat;
-    this.bmi = this.hitungBMI();
-    this.kategori = this.hitungKategori();
-    this.rekomendasi = this.hitungRekomendasi();
+  constructor() {
+    this._tinggi = 0;
+    this._berat = 0;
   }
 
-  hitungBMI() {
-    return this.berat / Math.pow(this.tinggi / 100, 2);
+  resetValues() {
+    this._tinggi = 0;
+    this._berat = 0;
   }
 
-  hitungKategori() {
-    if (this.bmi < 18.5) {
+  setTinggi(tinggi) {
+    this._tinggi = tinggi;
+  }
+
+  getTinggi() {
+    return this._tinggi;
+  }
+
+  setBerat(berat) {
+    this._berat = berat;
+  }
+
+  getBerat() {
+    return this._berat;
+  }
+
+  _hitungBMI() {
+    return this._berat / Math.pow(this._tinggi / 100, 2);
+  }
+
+  _hitungKategori() {
+    const bmi = this._hitungBMI();
+    if (bmi < 18.5) {
       return "Kurus";
-    } else if (this.bmi >= 18.5 && this.bmi < 25) {
+    } else if (bmi >= 18.5 && bmi < 25) {
       return "Normal";
-    } else if (this.bmi >= 25 && this.bmi < 30) {
+    } else if (bmi >= 25 && bmi < 30) {
       return "Gemuk";
     } else {
       return "Obesitas";
     }
   }
 
-  hitungRekomendasi() {
-    switch (this.kategori) {
+  _hitungIdealMin() {
+    return parseInt(18.5 * Math.pow(this._tinggi / 100, 2).toFixed(2));
+  }
+
+  _hitungIdealMax() {
+    return parseInt(24.9 * Math.pow(this._tinggi / 100, 2).toFixed(2));
+  }
+
+  _hitungRekomendasi() {
+    switch (this._hitungKategori()) {
       case "Kurus":
         return "Anda mungkin perlu menambah asupan makanan.";
       case "Normal":
@@ -37,33 +64,76 @@ class BMI {
         return "Tidak ada rekomendasi yang tersedia.";
     }
   }
+
+  hitungBMI() {
+    return {
+      bmi: this._hitungBMI().toFixed(2),
+      kategori: this._hitungKategori(),
+      idealMin: this._hitungIdealMin(),
+      idealMax: this._hitungIdealMax(),
+      rekomendasi: this._hitungRekomendasi(),
+    };
+  }
 }
 
 function hitungBMI(event) {
-  event.preventDefault(); // Menghentikan perilaku default dari form submit
+  event.preventDefault();
 
   var text = document.getElementById("hide");
   text.style.display = "none";
 
-  // Mengambil nilai tinggi dan berat dari input
   const tinggi = parseFloat(document.getElementById("tinggi").value);
   const berat = parseFloat(document.getElementById("berat").value);
 
-  // Membuat objek BMI
-  const bmiObj = new BMI(tinggi, berat);
+  const bmiObj = new BMI();
+  bmiObj.setTinggi(tinggi);
+  bmiObj.setBerat(berat);
 
-  // Menampilkan hasil BMI pada elemen dengan id 'bmiAnda'
-  document.getElementById(
-    "bmiAnda"
-  ).innerText = `Body Mass Index (BMI) Anda adalah: ${bmiObj.bmi.toFixed(2)}`;
+  const hasilBMI = bmiObj.hitungBMI();
 
-  // Menampilkan kategori BMI
   document.getElementById(
-    "category"
-  ).innerText = `Kategori BMI: ${bmiObj.kategori}`;
+    "hasilBMI"
+  ).innerText = `Body Mass Index (BMI) Anda adalah`;
+  document.getElementById("bmiAnda").innerText = `${hasilBMI.bmi}`;
 
-  // Menampilkan rekomendasi berdasarkan kategori BMI
   document.getElementById(
-    "rekomendasi"
-  ).innerText = `Rekomendasi: ${bmiObj.rekomendasi}`;
+    "berdasarkan"
+  ).innerText = `Berat badan Anda masuk ke dalam kategori`;
+  document.getElementById("category").innerText = `${hasilBMI.kategori}`;
+
+  document.getElementById(
+    "ideal"
+  ).innerHTML = `Berat badan ideal untuk tinggi Anda adalah antara`;
+  document.getElementById(
+    "angkaIdeal"
+  ).innerHTML = `${hasilBMI.idealMin} & ${hasilBMI.idealMax} Kg`;
+
+  document.getElementById("rekomendasi").innerText = `${hasilBMI.rekomendasi}`;
+
+  document.getElementById("hr1").style.display = "block";
+  document.getElementById("hr2").style.display = "block";
+  document.getElementById("hr3").style.display = "block";
+
+  document.getElementById("hitungLagi").style.display = "block";
+  document.getElementById("konsultasi").style.display = "block";
+
+  document.getElementById("hitungLagi").onclick = function () {
+    bmiObj.resetValues();
+
+    document.getElementById("tinggi").value = "";
+    document.getElementById("berat").value = "";
+    document.getElementById("hasilBMI").innerHTML = "";
+    document.getElementById("bmiAnda").innerHTML = "";
+    document.getElementById("berdasarkan").innerHTML = "";
+    document.getElementById("category").innerHTML = "";
+    document.getElementById("rekomendasi").innerHTML = "";
+    document.getElementById("ideal").innerHTML = "";
+    document.getElementById("angkaIdeal").innerHTML = "";
+    document.getElementById("hr1").style.display = "none";
+    document.getElementById("hr2").style.display = "none";
+    document.getElementById("hr3").style.display = "none";
+    document.getElementById("hitungLagi").style.display = "none";
+    document.getElementById("konsultasi").style.display = "none";
+    document.getElementById("hide").style.display = "";
+  };
 }
