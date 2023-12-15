@@ -1,15 +1,18 @@
+/* Mendefinisikan class Person untuk merepresentasikan individu
+   dengan tinggi dan berat badan
+*/
 class Person {
   constructor(height, weight) {
     this._height = height;
     this._weight = weight;
   }
-
+  // Fungsi untuk menghitung BMI
   _calculateBMI() {
     return this._weight / Math.pow(this._height, 2);
   }
-
+  // Fungsi untuk mendapatkan kategori BMI
   _getCategory(bmi) {
-    // Categorize BMI
+    // Kategori BMI
     if (bmi < 18.5) return "Kurus";
     else if (bmi < 24.9) return "Normal";
     else if (bmi < 29.9) return "Gemuk";
@@ -17,7 +20,7 @@ class Person {
   }
 
   _getRecommendation(category) {
-    // Provide recommendations based on BMI category
+    // Memberikan rekomendasi berdasarkan kategori BMI
     switch (category) {
       case "Kurus":
         return "Anda mungkin perlu menambah asupan makanan.";
@@ -32,7 +35,7 @@ class Person {
     }
   }
 
-  // Provide ideal weight based on user height
+  // Memberikan berat ideal berdasarkan tinggi pengguna
   _hitungIdealMin() {
     return parseInt(18.5 * Math.pow(this._height / 100, 2).toFixed(2));
   }
@@ -40,14 +43,14 @@ class Person {
   _hitungIdealMax() {
     return parseInt(24.9 * Math.pow(this._height / 100, 2).toFixed(2));
   }
-
+  // Fungsi untuk menampilkan hasil perhitungan BMI
   displayResult() {
     const bmi = this._calculateBMI();
     const category = this._getCategory(bmi);
     const recommendation = this._getRecommendation(category);
     const idealMin = this._hitungIdealMin();
     const idealMax = this._hitungIdealMax();
-
+    // Update elemen HTML dengan hasil perhitungan BMI
     document.getElementById(
       "hasilBMI"
     ).innerText = `Body Mass Index (BMI) Anda adalah`;
@@ -76,17 +79,18 @@ class Person {
   }
 }
 
+// Child class dari Person untuk penggunaan tinggi dalam satuan cm
 class PersonInCM extends Person {
   constructor(height, weight) {
     super(height, weight);
   }
 
-  // Override calculateBMI for height in cm
+  // Override calculateBMI untuk mengubah tinggi ke satuan meter kuadrat
   _calculateBMI() {
     return super._calculateBMI() * 10000;
   }
 }
-
+// Fungsi untuk menghitung BMI berdasarkan input pengguna
 function hitungBMI(event) {
   event.preventDefault();
 
@@ -96,21 +100,21 @@ function hitungBMI(event) {
   var text = document.getElementById("hide");
   text.style.display = "none";
 
-  // Use PersonInCM  based on your unit selection
+  // Membuat objek PersonInCM berdasarkan input pengguna
   const person = new PersonInCM(tinggi, berat);
-
+  // Menampilkan hasil perhitungan BMI
   person.displayResult();
 }
 
+// Fungsi untuk mereset formulir dan menyembunyikan hasil perhitungan BMI
 function hitungLagi() {
-  // Reset form and hide results
   document.forms["bmiForm"].reset();
   document.getElementById("hr1").style.display = "none";
   document.getElementById("hr2").style.display = "none";
   document.getElementById("hr3").style.display = "none";
   document.getElementById("konsultasi").style.display = "none";
   document.getElementById("hitungLagi").style.display = "none";
-  // Clear previous results
+
   document.getElementById("ideal").innerHTML = "";
   document.getElementById("angkaIdeal").innerHTML = "";
   document.getElementById("hasilBMI").innerText = "";
@@ -118,6 +122,6 @@ function hitungLagi() {
   document.getElementById("berdasarkan").innerText = "";
   document.getElementById("category").innerText = "";
   document.getElementById("rekomendasi").innerText = "";
-  // Add previous results
+
   document.getElementById("hide").style.display = "";
 }
