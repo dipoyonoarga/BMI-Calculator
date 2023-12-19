@@ -6,11 +6,32 @@ class Person {
     this._height = height;
     this._weight = weight;
   }
-  // Fungsi untuk menghitung BMI
+
+  // Getter untuk tinggi
+  get height() {
+    return this._height;
+  }
+
+  // Setter untuk tinggi
+  set height(height) {
+    this._height = height;
+  }
+
+  // Getter untuk berat badan
+  get weight() {
+    return this._weight;
+  }
+
+  // Setter untuk berat badan
+  set weight(weight) {
+    this._weight = weight;
+  }
+
+  // Fungsi privat untuk menghitung BMI
   _calculateBMI() {
     return this._weight / Math.pow(this._height, 2);
   }
-  // Fungsi untuk mendapatkan kategori BMI
+  // Fungsi privat untuk mendapatkan kategori BMI
   _getCategory(bmi) {
     // Kategori BMI
     if (bmi < 18.5) return "Kurus";
@@ -18,7 +39,7 @@ class Person {
     else if (bmi < 29.9) return "Gemuk";
     else return "Obesitas";
   }
-
+  // Fungsi privat untuk memberikan rekomendasi berdasarkan kategori BMI
   _getRecommendation(category) {
     // Memberikan rekomendasi berdasarkan kategori BMI
     switch (category) {
@@ -35,7 +56,7 @@ class Person {
     }
   }
 
-  // Memberikan berat ideal berdasarkan tinggi pengguna
+  // Fungsi privat untuk memberikan berat ideal berdasarkan tinggi pengguna
   _hitungIdealMin() {
     return parseInt(18.5 * Math.pow(this._height / 100, 2).toFixed(2));
   }
